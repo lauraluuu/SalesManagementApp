@@ -1,6 +1,10 @@
 ﻿import React from 'react';
 import { Table, Button } from 'reactstrap';
 
+const copyRightStyle = {
+    font: "10px Arial, sans-serif"
+};
+
  const StoreComponent = (props) => {
     return (
         <div>
@@ -30,6 +34,7 @@ import { Table, Button } from 'reactstrap';
                     </tr>
                 </tbody>
             </Table>
+            <div style={copyRightStyle}>&copy; 2020 - Laura Lu</div>
         </div>
     )
 }
