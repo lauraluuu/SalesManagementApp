@@ -15,29 +15,22 @@ import { Table, Button } from 'reactstrap';
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                    <th>#Sales</th>
-                    <th>Sales Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Store</th>
+                    <th>Date Sold</th>
+                    <th>Actions</th>
+                    <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                     <td>1</td>
-                    <td>Mark</td>
+                    <td>Sa;es</td>
                     <td>Otto</td>
                     <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <td>3</td>
-                    <td colSpan={2}>Larry the Bird</td>
-                    <td>@twitter</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
                     </tr>
                 </tbody>
             </Table>
