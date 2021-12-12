@@ -9,7 +9,7 @@ namespace SalesManagementApp.Models
         [Required]
         public string Name { get; set; }
         [Required]
-        public double price { get; set; }
+        public double Price { get; set; }
         //navigation property
         public List<Sales> ProductSold { get; set; }
     }
