@@ -1,43 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SalesManagementApp.Models;
 
 namespace SalesManagementApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        // GET: api/<CustomerController>
+        private readonly ICustomerService _ICustomerService;
+
+        public CustomerController(ICustomerService prICustomerService)
+        {
+            _ICustomerService = prICustomerService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult GetAll()
         {
-            return new string[] { "value1", "value2" };
+            List<Customer> cResult = _ICustomerService.GetAll();
+            return Ok(cResult);
         }
 
-        // GET api/<CustomerController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public IActionResult Search(string prName)
         {
-            return "value";
+            List<Customer> cResult = _ICustomerService.GetByName(prName);
+            return Ok(cResult);
         }
 
-        // POST api/<CustomerController>
+        [HttpPut]
+        public IActionResult Update(Customer prCustomer)
+        {
+            return Ok(_ICustomerService.Update(prCustomer));
+        }
+
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Save(Customer prCustomer)
         {
+            return Ok(_ICustomerService.Save(prCustomer));
         }
 
-        // PUT api/<CustomerController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete]
+        public IActionResult Delete(Customer prCustomer)
         {
-        }
-
-        // DELETE api/<CustomerController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            _ICustomerService.Delete(prCustomer);
+            return Ok();
         }
     }
 }

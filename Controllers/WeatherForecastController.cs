@@ -43,9 +43,9 @@ namespace SalesManagementApp.Controllers
             _ICustomerService.Update(customerToUpdate);*/
 
             //DELETE CUSTOMER
-            Customer customerToUpdate = _ICustomerService.GetByName("Jack Updated").FirstOrDefault();
+        /*    Customer customerToUpdate = _ICustomerService.GetByName("Jack Updated").FirstOrDefault();
             _ICustomerService.Delete(customerToUpdate);
-
+        */
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
