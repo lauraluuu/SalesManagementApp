@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-// import {Navbar, Container, Nav} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 
