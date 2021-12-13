@@ -47,6 +47,31 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
             setOpenCreate(false); //close Create Modal
         })
     }
+
+    /* UPDATE STORE */
+    const [storeToEdit, setStoreToEdit] = useState({ name: '', address: '' });
+    const handleStoreToEditInputChange = (event) => {
+        const { name, value } = event.target;
+        let storeToEditNewReference = { ...storeToEdit, [name]: value };
+        setStoreToEdit(storeToEditNewReference);
+    }
+
+    const handleStoreEdit = (item) => {
+        setStoreToEdit(item);
+
+        setOpenEdit(true);
+    }
+
+    const confirmUpdate = () => {
+        axios.put("https://localhost:7192/api/Store/Update", storeToEdit).then(response => {
+            let customersNewReference = [...storesList];
+            const index = customersNewReference.findIndex((item) => item.id === storeToEdit.id);
+            customersNewReference[index] = storeToEdit;
+            setStoresList(customersNewReference);
+            setOpenEdit(false);
+        })
+    }
+
     return (
         <div>
             <div>
@@ -72,7 +97,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.address}</td>
-                            <td><Button onClick={() => setOpenEdit(true)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
+                            <td><Button onClick={() => handleStoreEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
                             <td><Button onClick={() => setOpenDelete(true)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     )}
@@ -123,18 +148,18 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     <Form>
                         <Form.Field>
                             <label>NAME</label>
-                            <input placeholder='' />
+                            <input name="name" value={storeToEdit.name} placeholder={storeToEdit.name} onChange={handleStoreToEditInputChange} />
                         </Form.Field>
                         <Form.Field>
                             <label>ADDRESS</label>
-                            <input placeholder='' />
+                            <input name="address" value={storeToEdit.address} placeholder={storeToEdit.address} onChange={handleStoreToEditInputChange} />
                         </Form.Field>
                     </Form>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenEdit(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={() => setOpenEdit(false)}>edit <BsCheck2 /></SemiButton>
+                    <SemiButton positive onClick={confirmUpdate}>edit <BsCheck2 /></SemiButton>
                 </Modal.Actions>
             </Modal>
 
