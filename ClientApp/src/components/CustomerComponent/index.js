@@ -3,7 +3,7 @@ import { Table, Button } from 'reactstrap';
 import axios from 'axios';
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { BsCheck2 } from "react-icons/bs";
+import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 
  const CustomerComponent = (props) => {
@@ -138,7 +138,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenDelete(false)}>cancel</SemiButton>
-                    <SemiButton negative onClick={() => setOpenDelete(false)}>delete</SemiButton>
+                    <SemiButton negative onClick={() => setOpenDelete(false)}>delete <BsX /></SemiButton>
                 </Modal.Actions>
             </Modal>
 
