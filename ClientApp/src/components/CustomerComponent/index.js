@@ -35,7 +35,6 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
     }
 
     const confirmNewCustomer = () => {
-        console.log(customerToAdd);
         axios.post("https://localhost:7192/api/Customer/Save", customerToAdd).then(response => {
             let customersNewReference = [...customersList];
             customersNewReference.push(response.data);

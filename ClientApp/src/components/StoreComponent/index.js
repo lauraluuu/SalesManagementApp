@@ -29,6 +29,24 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
         getStoresList();
     }, [])
 
+    /* INSERT STORE */
+    const [storeToAdd, setStoreToAdd] = useState({ name: '', address: '' });
+    const handleStoreToAddInputChange = (event) => {
+        console.log(event);
+        const { name, value } = event.target;
+        let storeToAddNewReference = { ...storeToAdd, [name]: value };
+        setStoreToAdd(storeToAddNewReference);
+    }
+
+    const confirmNewStore = () => {
+        console.log(storeToAdd);
+        axios.post("https://localhost:7192/api/Store/Save", storeToAdd).then(response => {
+            let storesNewReference = [...storesList];
+            storesNewReference.push(response.data);
+            setStoresList(storesNewReference);
+            setOpenCreate(false); //close Create Modal
+        })
+    }
     return (
         <div>
             <div>
@@ -76,18 +94,18 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     <Form>
                         <Form.Field>
                             <label>NAME</label>
-                            <input placeholder='' />
+                            <input placeholder='' name="name" value={storeToAdd.name} onChange={handleStoreToAddInputChange} />
                         </Form.Field>
                         <Form.Field>
                             <label>ADDRESS</label>
-                            <input placeholder='' />
+                            <input placeholder=''  name="address" value={storeToAdd.address} onChange={handleStoreToAddInputChange} />
                         </Form.Field>
                     </Form>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenCreate(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={() => setOpenCreate(false)}>create <BsCheck2 /></SemiButton>
+                    <SemiButton positive onClick={confirmNewStore}>create <BsCheck2 /></SemiButton>
                 </Modal.Actions>
             </Modal>
 
