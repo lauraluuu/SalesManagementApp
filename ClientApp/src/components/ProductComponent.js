@@ -1,6 +1,8 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'reactstrap';
 import axios from 'axios';
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
  const ProductComponent = (props) => {
 
@@ -9,10 +11,20 @@ import axios from 'axios';
     };
 
     /* list products */
-    const [productsList, setProductsList] = useState([
-        {name: 'product1', price: 10},
-        {name: 'product2', price: 20},
-    ]);
+    const [productsList, setProductsList] = useState([]);
+
+    /* GET STORES LIST */
+    const getProductsList = () => {
+        let URL = "https://localhost:7192/api/Product/GetAll";
+
+        axios.get(URL).then(response => {
+            setProductsList(response.data);
+        })
+    }
+
+    useEffect(() => {
+        getProductsList();
+    }, [])
 
     return (
         <div>
@@ -38,8 +50,8 @@ import axios from 'axios';
                         <tr key={item.name}>
                             <td>{item.name}</td>
                             <td>{item.price}</td>
-                            <td><Button>EDIT</Button></td>
-                            <td><Button>DELETE</Button></td>
+                            <td><Button color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
+                            <td><Button color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     ))}
                 </tbody>

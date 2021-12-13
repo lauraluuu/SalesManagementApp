@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'reactstrap';
 import axios from 'axios';
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
  const CustomerComponent = (props) => {
     const copyRightStyle = {
@@ -21,9 +23,6 @@ import axios from 'axios';
 
     useEffect(() => {
         getCustomersList();
-        // return () => {
-            
-        // }
     }, [])
 
     return (
@@ -50,8 +49,8 @@ import axios from 'axios';
                         <tr key={item.name}>
                             <td>{item.name}</td>
                             <td>{item.address}</td>
-                            <td><Button>EDIT</Button></td>
-                            <td><Button>DELETE</Button></td>
+                            <td><Button color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
+                            <td><Button color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     )}
                 </tbody>

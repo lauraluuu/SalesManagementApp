@@ -1,6 +1,8 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'reactstrap';
 import axios from 'axios';
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
  const StoreComponent = (props) => {
     const copyRightStyle = {
@@ -8,10 +10,21 @@ import axios from 'axios';
     };
 
     /* list stores */
-    const [storesList, setStoresList] = useState([
-        {name: 'store1', address: 'Address 1'},
-        {name: 'store2', address: 'Address 2'},
-    ]);
+    const [storesList, setStoresList] = useState([]);
+
+    /* GET STORES LIST */
+    const getStoresList = () => {
+        let URL = "https://localhost:7192/api/Store/GetAll";
+
+        axios.get(URL).then(response => {
+            setStoresList(response.data);
+        })
+    }
+
+    useEffect(() => {
+        getStoresList();
+    }, [])
+
     return (
         <div>
             <div>
@@ -36,8 +49,8 @@ import axios from 'axios';
                         <tr key={item.name}>
                             <td>{item.name}</td>
                             <td>{item.address}</td>
-                            <td><Button>EDIT</Button></td>
-                            <td><Button>DELETE</Button></td>
+                            <td><Button color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
+                            <td><Button color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     )}
                 </tbody>
