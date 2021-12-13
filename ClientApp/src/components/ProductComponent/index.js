@@ -47,6 +47,30 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
         })
     }
 
+    /* UPDATE PRODUCT */
+    const [productToEdit, setProductToEdit] = useState({ name: '', price: '' });
+    const handleProductToEditInputChange = (event) => {
+        const { name, value } = event.target;
+        let productToEditNewReference = { ...productToEdit, [name]: value };
+        setProductToEdit(productToEditNewReference);
+    }
+
+    const handleProductEdit = (item) => {
+        setProductToEdit(item);
+
+        setOpenEdit(true);
+    }
+
+    const confirmUpdate = () => {
+        axios.put("https://localhost:7192/api/Product/Update", productToEdit).then(response => {
+            let productsNewReference = [...productsList];
+            const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
+            productsNewReference[index] = productToEdit;
+            setProductsList(productsNewReference);
+            setOpenEdit(false);
+        })
+    }
+
     return (
         <div>
             <div>
@@ -72,7 +96,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.price}</td>
-                            <td><Button onClick={() => setOpenEdit(true)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
+                            <td><Button onClick={() => handleProductEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
                             <td><Button onClick={() => setOpenDelete(true)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     ))}
@@ -123,18 +147,18 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     <Form>
                         <Form.Field>
                             <label>NAME</label>
-                            <input placeholder='' />
+                            <input name="name" value={productToEdit.name} placeholder={productToEdit.name} onChange={handleProductToEditInputChange} />
                         </Form.Field>
                         <Form.Field>
                             <label>PRICE</label>
-                            <input placeholder='' />
+                            <input name="price" value={productToEdit.price} placeholder={productToEdit.price} onChange={handleProductToEditInputChange} />
                         </Form.Field>
                     </Form>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenEdit(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={() => setOpenEdit(false)}>edit <BsCheck2 /></SemiButton>
+                    <SemiButton positive onClick={confirmUpdate}>edit <BsCheck2 /></SemiButton>
                 </Modal.Actions>
             </Modal>
 
