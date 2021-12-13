@@ -119,7 +119,7 @@ const copyRightStyle = {
                     <Form>
                         <Form.Field>
                             <label>Date sold</label>
-                            <input placeholder='' />
+                            <input type="date" placeholder='' />
                         </Form.Field>
                         <Form.Field>
                             <label>Customer</label>

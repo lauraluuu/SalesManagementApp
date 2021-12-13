@@ -24,11 +24,14 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
             setCustomersList(response.data);
         })
     }
+    
+    useEffect(() => {
+        getCustomersList();
+    }, [])
 
     /* INSERT CUSTOMER */
     const [customerToAdd, setCustomerToAdd] = useState({ name: '', address: '' });
     const handleCustomerToAddInputChange = (event) => {
-        console.log(event);
         const { name, value } = event.target;
         let customerToAddNewReference = { ...customerToAdd, [name]: value };
         setCustomerToAdd(customerToAddNewReference);
@@ -44,13 +47,29 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
     }
 
     /* UPDATE CUSTOMER */
-    const handleCustomerInputChange = () => {
-
+    const [customerToEdit, setCustomerToEdit] = useState({ name: '', address: '' });
+    const handleCustomerToEditInputChange = (event) => {
+        const { name, value } = event.target;
+        let customerToEditNewReference = { ...customerToEdit, [name]: value };
+        setCustomerToEdit(customerToEditNewReference);
     }
 
-    useEffect(() => {
-        getCustomersList();
-    }, [])
+    const handleCustomerEdit = (item) => {
+        setCustomerToEdit(item);
+
+        setOpenEdit(true);
+    }
+
+    const confirmUpdate = () => {
+        axios.put("https://localhost:7192/api/Customer/Update", customerToEdit).then(response => {
+            let customersNewReference = [...customersList];
+            const index = customersNewReference.findIndex((item) => item.id === customerToEdit.id);
+            customersNewReference[index] = customerToEdit;
+            setCustomersList(customersNewReference);
+            setOpenEdit(false);
+        })
+    }
+
 
     return (
         <div>
@@ -77,8 +96,8 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.address}</td>
-                            <td><Button onClick={() => setOpenEdit(true)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT </Button></td>
-                            <td><Button onClick={() => setOpenDelete(true)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
+                            <td><Button onClick={() => handleCustomerEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT </Button></td>
+                            <td><Button onClick={() => setOpenEdit(false)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     )}
                 </tbody>
@@ -128,18 +147,18 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     <Form>
                         <Form.Field>
                             <label>NAME</label>
-                            <input placeholder='' />
+                            <input name="name" value={customerToEdit.name} placeholder={customerToEdit.name} onChange={handleCustomerToEditInputChange}/>
                         </Form.Field>
                         <Form.Field>
                             <label>ADDRESS</label>
-                            <input placeholder='' />
+                            <input name="address" value={customerToEdit.address} placeholder={customerToEdit.address} onChange={handleCustomerToEditInputChange}/>
                         </Form.Field>
                     </Form>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenEdit(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={() => setOpenEdit(false)}>edit <BsCheck2 /></SemiButton>
+                    <SemiButton positive onClick={confirmUpdate}>edit <BsCheck2 /></SemiButton>
                 </Modal.Actions>
             </Modal>
 
