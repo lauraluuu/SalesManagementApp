@@ -7,6 +7,7 @@ import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 
  const StoreComponent = (props) => {
+    const [storesList, setStoresList] = useState([]);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -14,9 +15,6 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
     const copyRightStyle = {
         font: "10px Arial, sans-serif"
     };
-
-    /* list stores */
-    const [storesList, setStoresList] = useState([]);
 
     /* GET STORES LIST */
     const getStoresList = () => {

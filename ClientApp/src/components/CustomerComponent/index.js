@@ -7,6 +7,7 @@ import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 
  const CustomerComponent = (props) => {
+    const [customersList, setCustomersList] = useState([]);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -15,16 +16,37 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
         font: "10px Arial, sans-serif"
     };
 
-    /* list customers */
-    const [customersList, setCustomersList] = useState([]);
-
-    /* GET CUSTOMER LIST */
+    /* GET CUSTOMERS LIST */
     const getCustomersList = () => {
         let URL = "https://localhost:7192/api/Customer/GetAll";
 
         axios.get(URL).then(response => {
             setCustomersList(response.data);
         })
+    }
+
+    /* INSERT CUSTOMER */
+    const [customerToAdd, setCustomerToAdd] = useState({ name: '', address: '' });
+    const handleCustomerToAddInputChange = (event) => {
+        console.log(event);
+        const { name, value } = event.target;
+        let customerToAddNewReference = { ...customerToAdd, [name]: value };
+        setCustomerToAdd(customerToAddNewReference);
+    }
+
+    const confirmNewCustomer = () => {
+        console.log(customerToAdd);
+        axios.post("https://localhost:7192/api/Customer/Save", customerToAdd).then(response => {
+            let customersNewReference = [...customersList];
+            customersNewReference.push(response.data);
+            setCustomersList(customersNewReference);
+            setOpenCreate(false); //close Create Modal
+        })
+    }
+
+    /* UPDATE CUSTOMER */
+    const handleCustomerInputChange = () => {
+
     }
 
     useEffect(() => {
@@ -78,18 +100,18 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     <Form>
                         <Form.Field>
                             <label>NAME</label>
-                            <input placeholder='' />
+                            <input placeholder='' name="name" value={customerToAdd.name} onChange={handleCustomerToAddInputChange}/>
                         </Form.Field>
                         <Form.Field>
                             <label>ADDRESS</label>
-                            <input placeholder='' />
+                            <input placeholder='' name="address" value={customerToAdd.address} onChange={handleCustomerToAddInputChange}/>
                         </Form.Field>
                     </Form>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenCreate(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={() => setOpenCreate(false)}>create <BsCheck2 /></SemiButton>
+                    <SemiButton positive onClick={confirmNewCustomer}>create <BsCheck2 /></SemiButton>
                 </Modal.Actions>
             </Modal>
 
