@@ -12,16 +12,16 @@
         {
             return _context.Product.ToList();
         }
-        public List<Product> GetByName(string prName)
+        public Product GetById(int prId)
         {
-            var linq = from products in _context.Product select products;
 
-            if (!string.IsNullOrWhiteSpace(prName))
+            if (prId != null)
             {
-                linq = linq.Where(x => x.Name.ToUpper().Contains(prName.ToUpper()));
+                Product productFromDB = _context.Product.First(x => x.Id == prId);
+                return productFromDB;
             }
 
-            return linq.ToList();
+            return null;
         }
         public Product Save(Product prProduct)
         {

@@ -1,4 +1,7 @@
-﻿namespace SalesManagementApp.Models
+﻿using Microsoft.EntityFrameworkCore;
+using SalesManagementApp.Data.ViewModels;
+
+namespace SalesManagementApp.Models
 {
     public class SalesService : ISalesService
     {
@@ -10,29 +13,46 @@
 
         public List<Sales> GetAll()
         {
-            return _context.Sales.ToList();
+            var SalesList = _context.Sales.Include(n => n.Customer)
+                .Include(n => n.Store).Include(n => n.Product).ToList();
+            return SalesList;
         }
         public Sales GetById(int prId)
         {
 
             if (prId != null)
             {
-                Sales salesFromDB = _context.Sales.First(x => x.Id == prId);
+                Sales salesFromDB = _context.Sales
+                    .Include(n => n.Customer).Include(n => n.Store).
+                    Include(n => n.Product).First(x => x.Id == prId);
                 return salesFromDB;
             }
 
             return null;
         }
-        public Sales Save(Sales prSales)
+        public Sales Save(NewSalesVM prSales)
         {
-            _context.Sales.Add(prSales);
+            var newSales = new Sales()
+            {
+                StoreId = prSales.StoreId,
+                DateSold = prSales.DateSold,
+                CustomerId = prSales.CustomerId,
+                ProductId = prSales.ProductId,
+            };
+
+            _context.Sales.Add(newSales);
             _context.SaveChanges();
 
-            return prSales;
+            Sales salesResult = _context.Sales
+                .Include(n => n.Customer).Include(n => n.Store).
+                Include(n => n.Product).First(x => x.Id == newSales.Id);
+
+            return salesResult;
         }
         public Sales Update(Sales prSales)
         {
-            Sales salesFromDB = _context.Sales.First(x => x.Id == prSales.Id);
+            Sales salesFromDB = _context.Sales.Include(n => n.Customer).Include(n => n.Store).
+                    Include(n => n.Product).First(x => x.Id == prSales.Id);
             _context.Entry(salesFromDB).CurrentValues.SetValues(prSales);
             _context.SaveChanges();
 

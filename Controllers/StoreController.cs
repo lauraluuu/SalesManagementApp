@@ -23,9 +23,9 @@ namespace SalesManagementApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string prName)
+        public IActionResult Search(int prId)
         {
-            List<Store> cResult = _IStoreService.GetByName(prName);
+            Store cResult = _IStoreService.GetById(prId);
             return Ok(cResult);
         }
 

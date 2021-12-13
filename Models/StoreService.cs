@@ -12,17 +12,18 @@
         {
             return _context.Store.ToList();
         }
-        public List<Store> GetByName(string prName)
+        public Store GetById(int prId)
         {
-            var linq = from stores in _context.Store select stores;
 
-            if (!string.IsNullOrWhiteSpace(prName))
+            if (prId != null)
             {
-                linq = linq.Where(x => x.Name.ToUpper().Contains(prName.ToUpper()));
+                Store storesFromDB = _context.Store.First(x => x.Id == prId);
+                return storesFromDB;
             }
 
-            return linq.ToList();
+            return null;
         }
+
         public Store Save(Store prStore)
         {
             _context.Store.Add(prStore);

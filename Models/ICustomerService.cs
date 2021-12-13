@@ -5,7 +5,7 @@ namespace SalesManagementApp.Models
     {
         void Delete(Customer prCustomer);
         List<Customer> GetAll();
-        List<Customer> GetByName(string prName);
+        Customer GetById(int prId);
         Customer Save(Customer prCustomer);
         Customer Update(Customer prCustomer);
     }

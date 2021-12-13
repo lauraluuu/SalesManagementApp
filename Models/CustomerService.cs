@@ -12,16 +12,16 @@
         {
             return _context.Customer.ToList();
         }
-        public List<Customer> GetByName(string prName)
+        public Customer GetById(int prId)
         {
-            var linq = from customers in _context.Customer select customers;
 
-            if (!string.IsNullOrWhiteSpace(prName))
+            if (prId != null)
             {
-                linq = linq.Where(x => x.Name.ToUpper().Contains(prName.ToUpper()));
+                Customer customerFromDB = _context.Customer.First(x => x.Id == prId);
+                return customerFromDB;
             }
 
-            return linq.ToList();
+            return null;
         }
         public Customer Save(Customer prCustomer)
         {

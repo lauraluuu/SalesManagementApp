@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SalesManagementApp.Data.ViewModels;
 using SalesManagementApp.Models;
 
 namespace SalesManagementApp.Controllers
@@ -36,7 +37,7 @@ namespace SalesManagementApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(Sales prSales)
+        public IActionResult Save(NewSalesVM prSales)
         {
             return Ok(_ISalesService.Save(prSales));
         }

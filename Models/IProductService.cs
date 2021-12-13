@@ -5,7 +5,7 @@ namespace SalesManagementApp.Models
     {
         void Delete(Product prProduct);
         List<Product> GetAll();
-        List<Product> GetByName(string prName);
+        Product GetById(int prId);
         Product Save(Product prProduct);
         Product Update(Product prProduct);
     }
