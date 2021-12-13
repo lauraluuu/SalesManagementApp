@@ -53,7 +53,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                 </thead>
                 <tbody>
                     {storesList.map(item => 
-                        <tr key={item.Id}>
+                        <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.address}</td>
                             <td><Button onClick={() => setOpenEdit(true)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
