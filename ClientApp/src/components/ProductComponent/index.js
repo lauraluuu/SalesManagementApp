@@ -7,6 +7,7 @@ import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 
  const ProductComponent = (props) => {
+    const [productsList, setProductsList] = useState([]);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -15,10 +16,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
         font: "10px Arial, sans-serif"
     };
 
-    /* list products */
-    const [productsList, setProductsList] = useState([]);
-
-    /* GET STORES LIST */
+    /* GET PRODUCT LIST */
     const getProductsList = () => {
         let URL = "https://localhost:7192/api/Product/GetAll";
 
@@ -30,6 +28,24 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
     useEffect(() => {
         getProductsList();
     }, [])
+
+    /* INSERT PRODUCT */
+    const [productToAdd, setProductToAdd] = useState({ name: '', address: '' });
+    const handleProductToAddInputChange = (event) => {
+        console.log(event);
+        const { name, value } = event.target;
+        let productToAddNewReference = { ...productToAdd, [name]: value };
+        setProductToAdd(productToAddNewReference);
+    }
+
+    const confirmNewProduct = () => {
+        axios.post("https://localhost:7192/api/Product/Save", productToAdd).then(response => {
+            let productsNewReference = [...productsList];
+            productsNewReference.push(response.data);
+            setProductsList(productsNewReference);
+            setOpenCreate(false); //close Create Modal
+        })
+    }
 
     return (
         <div>
@@ -78,18 +94,18 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     <Form>
                         <Form.Field>
                             <label>NAME</label>
-                            <input placeholder='' />
+                            <input placeholder='' name="name" value={productToAdd.name} onChange={handleProductToAddInputChange} />
                         </Form.Field>
                         <Form.Field>
                             <label>PRICE</label>
-                            <input placeholder='' />
+                            <input placeholder='' name="price" value={productToAdd.price} onChange={handleProductToAddInputChange} />
                         </Form.Field>
                     </Form>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenCreate(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={() => setOpenCreate(false)}>create <BsCheck2 /></SemiButton>
+                    <SemiButton positive onClick={confirmNewProduct}>create <BsCheck2 /></SemiButton>
                 </Modal.Actions>
             </Modal>
 
