@@ -71,6 +71,24 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
         })
     }
 
+    /* DELETE PRODUCT */
+    const handleProductDelete = (item) => {
+        setProductToEdit(item);
+
+        setOpenDelete(true);
+    }
+
+    const deleteProduct = () => {
+        axios.delete("https://localhost:7192/api/Product/Delete", { data: productToEdit }).then(response => {
+            let productsNewReference = [...productsList];
+            const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
+            productsNewReference.splice(index, 1);
+            setProductToEdit({ name: '', price: '' });
+            setProductsList(productsNewReference);
+            setOpenDelete(false);
+        })
+    }
+
     return (
         <div>
             <div>
@@ -97,7 +115,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                             <td>{item.name}</td>
                             <td>{item.price}</td>
                             <td><Button onClick={() => handleProductEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
-                            <td><Button onClick={() => setOpenDelete(true)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
+                            <td><Button onClick={() => handleProductDelete(item)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -170,7 +188,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                 onClose={() => setOpenDelete(false)}
                 onOpen={() => setOpenDelete(true)}
             >
-                <Modal.Header>Delete Product</Modal.Header>
+                <Modal.Header>Delete Product {productToEdit.name}</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
                         Are you sure?
@@ -178,7 +196,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenDelete(false)}>cancel</SemiButton>
-                    <SemiButton negative onClick={() => setOpenDelete(false)}>delete <BsX /></SemiButton>
+                    <SemiButton negative onClick={deleteProduct}>delete <BsX /></SemiButton>
                 </Modal.Actions>
             </Modal>
         </div>
