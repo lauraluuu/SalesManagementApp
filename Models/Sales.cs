@@ -8,6 +8,8 @@ namespace SalesManagementApp.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateSold { get; set; }
 
         //Navigation Properties

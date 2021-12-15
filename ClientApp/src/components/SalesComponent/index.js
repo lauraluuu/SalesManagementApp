@@ -59,7 +59,7 @@ const copyRightStyle = {
                             <td>{item.customer.name}</td>
                             <td>{item.product.name}</td>
                             <td>{item.store.name}</td>
-                            <td>{item.dateSold}</td>
+                            <td>{new Date(item.dateSold).toLocaleDateString()}</td>
                             <td><Button onClick={() => setOpenEdit(true)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
                             <td><Button onClick={() => setOpenDelete(true)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
