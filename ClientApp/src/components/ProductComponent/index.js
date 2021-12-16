@@ -6,16 +6,12 @@ import { MdDelete } from "react-icons/md";
 import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
+import AddProductModal from './AddProductModal'
 
  const ProductComponent = (props) => {
     const [productsList, setProductsList] = useState([]);
-    const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-
-    const copyRightStyle = {
-        font: "10px Arial, sans-serif"
-    };
 
     /* GET PRODUCT LIST */
     const getProductsList = () => {
@@ -32,21 +28,6 @@ import CopyRight from '../CopyRight';
 
     /* INSERT PRODUCT */
     const [productToAdd, setProductToAdd] = useState({ name: '', address: '' });
-    const handleProductToAddInputChange = (event) => {
-        console.log(event);
-        const { name, value } = event.target;
-        let productToAddNewReference = { ...productToAdd, [name]: value };
-        setProductToAdd(productToAddNewReference);
-    }
-
-    const confirmNewProduct = () => {
-        axios.post("https://localhost:7192/api/Product/Save", productToAdd).then(response => {
-            let productsNewReference = [...productsList];
-            productsNewReference.push(response.data);
-            setProductsList(productsNewReference);
-            setOpenCreate(false); //close Create Modal
-        })
-    }
 
     /* UPDATE PRODUCT */
     const [productToEdit, setProductToEdit] = useState({ name: '', price: '' });
@@ -93,12 +74,7 @@ import CopyRight from '../CopyRight';
     return (
         <div>
             <div>
-                <Button
-                    onClick={() => setOpenCreate(true)}
-                    color="primary"
-                >
-                    New Product
-                </Button>
+                <AddProductModal getProductsList={getProductsList} />
             </div>
             <br />
             <Table striped bordered hover>
@@ -122,35 +98,6 @@ import CopyRight from '../CopyRight';
                 </tbody>
             </Table>
             <CopyRight />
-
-            {/* Create Modal */}
-            <Modal
-                size={"tiny"}
-                centered={false}
-                open={openCreate}
-                onClose={() => setOpenCreate(false)}
-                onOpen={() => setOpenCreate(true)}
-            >
-                <Modal.Header>Create Product</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                    <Form>
-                        <Form.Field>
-                            <label>NAME</label>
-                            <input placeholder='' name="name" value={productToAdd.name} onChange={handleProductToAddInputChange} />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>PRICE</label>
-                            <input placeholder='' name="price" value={productToAdd.price} onChange={handleProductToAddInputChange} />
-                        </Form.Field>
-                    </Form>
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <SemiButton secondary onClick={() => setOpenCreate(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={confirmNewProduct}>create <BsCheck2 /></SemiButton>
-                </Modal.Actions>
-            </Modal>
 
             {/* Edit Modal */}
             <Modal

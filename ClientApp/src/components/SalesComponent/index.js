@@ -13,8 +13,12 @@ import CopyRight from '../CopyRight';
     const [openDelete, setOpenDelete] = useState(false);
     const [salesList, setSalesList] = useState([]);
     const [storesList, setStoresList] = useState([]);
+    const [store, setStore] = useState({id: '',  name: '', address: '' });
     const [productsList, setProductsList] = useState([]);
+    const [product, setProduct] = useState({id: '', price: null, name: '' });
     const [customersList, setCustomersList] = useState([]);
+    const [customer, setCustomer] = useState({id: '',  name: '', address: '' });
+    const [dateSold, setDateSold] = useState('');
 
     /* GET SALES LIST */
     const getSalesList = () => {
@@ -58,6 +62,47 @@ import CopyRight from '../CopyRight';
         getProductsList();
         getCustomersList();
     }, [])
+
+    /* CHANGE CUSTOMER INPUT */
+    const handleCustomerInputChange = (event) => {
+        const { name, value } = event.target;
+        let customerNewReference = { ...customer, [name]: value };
+        setCustomer(customerNewReference);
+    }
+
+    /* CHANGE PRODUCT INPUT */
+    const handleProductInputChange = (event) => {
+        const { name, value } = event.target;
+        let productNewReference = { ...product, [name]: value };
+        setCustomer(productNewReference);
+    }
+
+    /* CHANGE STORE INPUT */
+    const handleStoreInputChange = (event) => {
+        const { name, value } = event.target;
+        let storeNewReference = { ...customer, [name]: value };
+        setCustomer(storeNewReference);
+    }
+
+    /* CHANGE DATE INPUT */
+    const handleDateSoldInputChange = (event) => {
+        setDateSold(event.target.value);
+    }
+
+    const confirmNewSale = () => {
+        axios.post("https://localhost:7192/api/Sales/Save", 
+            {
+                storeId: store.id, 
+                dateSold: dateSold,
+                customerId: customer.id,
+                productId: product.id
+            }).then(response => {
+            let salesNewReference = [];
+            // customersNewReference.push(response.data);
+            // setCustomersList(customersNewReference);
+            setOpenCreate(false); //close Create Modal
+        })
+    }
 
     /* DELETE SALES */
     const [salesToDelete, setSalesToDelete] = useState({id: undefined});
@@ -129,33 +174,23 @@ import CopyRight from '../CopyRight';
                 <Modal.Content>
                     <Modal.Description>
                     <Form>
-                        <Form.Field>
+                        <Form.Field
+                            onChange={handleDateSoldInputChange}
+                        >
                             <label>Date sold</label>
                             <input type="date" placeholder='' />
                         </Form.Field>
                         <Form.Field
                             label="Customer"
                             control="select"
-                            onChange={e=>e.target.value}
+                            // onChange={e=>e.target.value}
+                            onChange={handleCustomerInputChange}
                             required
                         >
-                            <option key="1" value="">select customer</option>
+                            <option key="0" value="">select customer</option>
                             {
                                 productsList.map(c=>(
-                                    <option key={c.id} value={c.id}>{c.name}</option>
-                                ))
-                            }
-                        </Form.Field>
-                        <Form.Field
-                            label="Customer"
-                            control="select"
-                            onChange={e=>e.target.value}
-                            required
-                        >
-                            <option key="1" value="">select customer</option>
-                            {
-                                productsList.map(c=>(
-                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                    <option key={c.id} name={c.name} value={c.name}>{c.name}</option>
                                 ))
                             }
                         </Form.Field>
@@ -165,10 +200,10 @@ import CopyRight from '../CopyRight';
                             onChange={e=>e.target.value}
                             required
                         >
-                            <option key="1" value="">select product</option>
+                            <option key="0" value="">select product</option>
                             {
                                 productsList.map(c=>(
-                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                    <option key={c.id} name={c.name} value={c.name}>{c.name}</option>
                                 ))
                             }
                         </Form.Field>
@@ -178,10 +213,10 @@ import CopyRight from '../CopyRight';
                             onChange={e=>e.target.value}
                             required
                         >
-                            <option key="1" value="">select store</option>
+                            <option key="0" value="">select store</option>
                             {
-                                productsList.map(c=>(
-                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                storesList.map(c=>(
+                                    <option key={c.id} name={c.name} value={c.name}>{c.name}</option>
                                 ))
                             }
                         </Form.Field>
@@ -218,7 +253,7 @@ import CopyRight from '../CopyRight';
                         >
                             <option key="1" value="">select customer</option>
                             {
-                                productsList.map(c=>(
+                                customersList.map(c=>(
                                     <option key={c.id} value={c.id}>{c.name}</option>
                                 ))
                             }
@@ -244,7 +279,7 @@ import CopyRight from '../CopyRight';
                         >
                             <option key="1" value="">select store</option>
                             {
-                                productsList.map(c=>(
+                                storesList.map(c=>(
                                     <option key={c.id} value={c.id}>{c.name}</option>
                                 ))
                             }

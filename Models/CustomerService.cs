@@ -43,6 +43,5 @@
             _context.Entry(prCustomer).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             _context.SaveChanges();
         }
-
     }
 }

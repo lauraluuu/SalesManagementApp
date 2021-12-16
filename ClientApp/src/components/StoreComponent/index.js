@@ -6,16 +6,12 @@ import { MdDelete } from "react-icons/md";
 import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
+import AddStoreModal from './AddStoreModal';
 
  const StoreComponent = (props) => {
     const [storesList, setStoresList] = useState([]);
-    const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-
-    const copyRightStyle = {
-        font: "10px Arial, sans-serif"
-    };
 
     /* GET STORES LIST */
     const getStoresList = () => {
@@ -29,25 +25,6 @@ import CopyRight from '../CopyRight';
     useEffect(() => {
         getStoresList();
     }, [])
-
-    /* INSERT STORE */
-    const [storeToAdd, setStoreToAdd] = useState({ name: '', address: '' });
-    const handleStoreToAddInputChange = (event) => {
-        console.log(event);
-        const { name, value } = event.target;
-        let storeToAddNewReference = { ...storeToAdd, [name]: value };
-        setStoreToAdd(storeToAddNewReference);
-    }
-
-    const confirmNewStore = () => {
-        console.log(storeToAdd);
-        axios.post("https://localhost:7192/api/Store/Save", storeToAdd).then(response => {
-            let storesNewReference = [...storesList];
-            storesNewReference.push(response.data);
-            setStoresList(storesNewReference);
-            setOpenCreate(false); //close Create Modal
-        })
-    }
 
     /* UPDATE STORE */
     const [storeToEdit, setStoreToEdit] = useState({ name: '', address: '' });
@@ -94,12 +71,7 @@ import CopyRight from '../CopyRight';
     return (
         <div>
             <div>
-                <Button
-                    onClick={() => setOpenCreate(true)}
-                    color="primary"
-                >
-                    New Store
-                </Button>
+                <AddStoreModal getStoresList={getStoresList}/>
             </div>
             <br />
             <Table striped bordered hover>
@@ -123,36 +95,7 @@ import CopyRight from '../CopyRight';
                 </tbody>
             </Table>
             <CopyRight />
-
-            {/* Create Modal */}
-            <Modal
-                size={"tiny"}
-                centered={false}
-                open={openCreate}
-                onClose={() => setOpenCreate(false)}
-                onOpen={() => setOpenCreate(true)}
-            >
-                <Modal.Header>Create Store</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                    <Form>
-                        <Form.Field>
-                            <label>NAME</label>
-                            <input placeholder='' name="name" value={storeToAdd.name} onChange={handleStoreToAddInputChange} />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>ADDRESS</label>
-                            <input placeholder=''  name="address" value={storeToAdd.address} onChange={handleStoreToAddInputChange} />
-                        </Form.Field>
-                    </Form>
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <SemiButton secondary onClick={() => setOpenCreate(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={confirmNewStore}>create <BsCheck2 /></SemiButton>
-                </Modal.Actions>
-            </Modal>
-
+            
             {/* Edit Modal */}
             <Modal
                 size={"tiny"}
