@@ -6,11 +6,11 @@ import { MdDelete } from "react-icons/md";
 import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
-import AddProductModal from './AddProductModal'
+import AddProductModal from './AddProductModal';
+import EditProductModal from './EditProductModal';
 
  const ProductComponent = (props) => {
     const [productsList, setProductsList] = useState([]);
-    const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
 
     /* GET PRODUCT LIST */
@@ -37,21 +37,21 @@ import AddProductModal from './AddProductModal'
         setProductToEdit(productToEditNewReference);
     }
 
-    const handleProductEdit = (item) => {
-        setProductToEdit(item);
+    // const handleProductEdit = (item) => {
+    //     setProductToEdit(item);
 
-        setOpenEdit(true);
-    }
+    //     setOpenEdit(true);
+    // }
 
-    const confirmUpdate = () => {
-        axios.put("https://localhost:7192/api/Product/Update", productToEdit).then(response => {
-            let productsNewReference = [...productsList];
-            const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
-            productsNewReference[index] = productToEdit;
-            setProductsList(productsNewReference);
-            setOpenEdit(false);
-        })
-    }
+    // const confirmUpdate = () => {
+    //     axios.put("https://localhost:7192/api/Product/Update", productToEdit).then(response => {
+    //         let productsNewReference = [...productsList];
+    //         const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
+    //         productsNewReference[index] = productToEdit;
+    //         setProductsList(productsNewReference);
+    //         setOpenEdit(false);
+    //     })
+    // }
 
     /* DELETE PRODUCT */
     const handleProductDelete = (item) => {
@@ -87,19 +87,19 @@ import AddProductModal from './AddProductModal'
                     </tr>
                 </thead>
                 <tbody>
-                    {productsList.map(item => (
-                        <tr key={item.id}>
-                            <td>{item.name}</td>
-                            <td>{item.price}</td>
-                            <td><Button onClick={() => handleProductEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
-                            <td><Button onClick={() => handleProductDelete(item)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
+                    {productsList.map(product => (
+                        <tr key={product.id}>
+                            <td>{product.name}</td>
+                            <td>{product.price}</td>
+                            <td><EditProductModal product={product} getProductsList={getProductsList} /></td>
+                            <td><Button onClick={() => handleProductDelete(product)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
             <CopyRight />
 
-            {/* Edit Modal */}
+            {/* Edit Modal
             <Modal
                 size={"tiny"}
                 centered={false}
@@ -126,7 +126,7 @@ import AddProductModal from './AddProductModal'
                     <SemiButton secondary onClick={() => setOpenEdit(false)}>cancel</SemiButton>
                     <SemiButton positive onClick={confirmUpdate}>edit <BsCheck2 /></SemiButton>
                 </Modal.Actions>
-            </Modal>
+            </Modal> */}
 
             {/* Delete Modal */}
             <Modal
