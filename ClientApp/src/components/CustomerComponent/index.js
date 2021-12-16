@@ -7,6 +7,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
 import AddCustomerModal from './AddCustomerModal';
 import EditCustomerModal from './EditCustomerModal';
+import DeleteCustomerModal from './DeleteCustomerModal';
 
 
  const CustomerComponent = (props) => {
@@ -74,6 +75,7 @@ import EditCustomerModal from './EditCustomerModal';
                             <td>{customer.name}</td>
                             <td>{customer.address}</td>
                             <td><EditCustomerModal customer={customer} getCustomersList={getCustomersList} /></td>
+                            <td><DeleteCustomerModal customer={customer} getCustomersList={getCustomersList} /></td>
                             <td><Button onClick={() => handleCustomerDelete(customer)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     )}
