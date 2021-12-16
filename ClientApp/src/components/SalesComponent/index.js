@@ -5,18 +5,16 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
-
-const copyRightStyle = {
-    font: "10px Arial, sans-serif"
-};
+import CopyRight from '../CopyRight';
 
  const SalesComponent = (props) => {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-
-    /* list sales */
-    const [salsList, setSalesList] = useState([]);
+    const [salesList, setSalesList] = useState([]);
+    const [storesList, setStoresList] = useState([]);
+    const [productsList, setProductsList] = useState([]);
+    const [customersList, setCustomersList] = useState([]);
 
     /* GET SALES LIST */
     const getSalesList = () => {
@@ -27,9 +25,60 @@ const copyRightStyle = {
         })
     }
 
+    /* GET STORES LIST */
+    const getStoresList = () => {
+        let URL = "https://localhost:7192/api/Store/GetAll";
+
+        axios.get(URL).then(response => {
+            setStoresList(response.data);
+        })
+    }
+
+    /* GET PRODUCT LIST */
+    const getProductsList = () => {
+        let URL = "https://localhost:7192/api/Product/GetAll";
+
+        axios.get(URL).then(response => {
+            setProductsList(response.data);
+        })
+    }
+
+    /* GET CUSTOMERS LIST */
+    const getCustomersList = () => {
+        let URL = "https://localhost:7192/api/Customer/GetAll";
+
+        axios.get(URL).then(response => {
+            setCustomersList(response.data);
+        })
+    }
+
     useEffect(() => {
         getSalesList();
+        getStoresList();
+        getProductsList();
+        getCustomersList();
     }, [])
+
+    /* DELETE SALES */
+    const [salesToDelete, setSalesToDelete] = useState({id: undefined});
+    const handleSalesDelete = (item) => {
+        setSalesToDelete({id: item.id});
+
+        setOpenDelete(true);
+    }
+
+    const deleteSales = () => {
+        console.log(salesToDelete);
+
+        axios.delete(`https://localhost:7192/api/Sales/Delete?id=${salesToDelete.id}`).then(response => {
+            let salesNewReference = [...salesList];
+            const index = salesNewReference.findIndex((item) => item.id === salesToDelete);
+            salesNewReference.splice(index, 1);
+            setSalesToDelete({id: undefined});
+            setStoresList(salesNewReference);
+            setOpenDelete(false);
+        })
+    }
 
     return (
         <div>
@@ -54,19 +103,19 @@ const copyRightStyle = {
                     </tr>
                 </thead>
                 <tbody>
-                    {salsList.map(item => (
+                    {salesList.map(item => (
                         <tr key={item.id}>
                             <td>{item.customer.name}</td>
                             <td>{item.product.name}</td>
                             <td>{item.store.name}</td>
                             <td>{new Date(item.dateSold).toLocaleDateString()}</td>
                             <td><Button onClick={() => setOpenEdit(true)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
-                            <td><Button onClick={() => setOpenDelete(true)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
+                            <td><Button onClick={() => handleSalesDelete(item)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
-            <div style={copyRightStyle}>&copy; 2020 - Laura Lu</div>
+            <CopyRight />
 
             {/* Create Modal */}
             <Modal
@@ -82,19 +131,59 @@ const copyRightStyle = {
                     <Form>
                         <Form.Field>
                             <label>Date sold</label>
-                            <input placeholder='' />
+                            <input type="date" placeholder='' />
                         </Form.Field>
-                        <Form.Field>
-                            <label>Customer</label>
-                            <input placeholder='' />
+                        <Form.Field
+                            label="Customer"
+                            control="select"
+                            onChange={e=>e.target.value}
+                            required
+                        >
+                            <option key="1" value="">select customer</option>
+                            {
+                                productsList.map(c=>(
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))
+                            }
                         </Form.Field>
-                        <Form.Field>
-                            <label>Product</label>
-                            <input placeholder='' />
+                        <Form.Field
+                            label="Customer"
+                            control="select"
+                            onChange={e=>e.target.value}
+                            required
+                        >
+                            <option key="1" value="">select customer</option>
+                            {
+                                productsList.map(c=>(
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))
+                            }
                         </Form.Field>
-                        <Form.Field>
-                            <label>Store</label>
-                            <input placeholder='' />
+                        <Form.Field
+                            label="Product"
+                            control="select"
+                            onChange={e=>e.target.value}
+                            required
+                        >
+                            <option key="1" value="">select product</option>
+                            {
+                                productsList.map(c=>(
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))
+                            }
+                        </Form.Field>
+                        <Form.Field
+                            label="Store"
+                            control="select"
+                            onChange={e=>e.target.value}
+                            required
+                        >
+                            <option key="1" value="">select store</option>
+                            {
+                                productsList.map(c=>(
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))
+                            }
                         </Form.Field>
                     </Form>
                     </Modal.Description>
@@ -121,17 +210,44 @@ const copyRightStyle = {
                             <label>Date sold</label>
                             <input type="date" placeholder='' />
                         </Form.Field>
-                        <Form.Field>
-                            <label>Customer</label>
-                            <input placeholder='' />
+                        <Form.Field
+                            label="Customer"
+                            control="select"
+                            onChange={e=>e.target.value}
+                            required
+                        >
+                            <option key="1" value="">select customer</option>
+                            {
+                                productsList.map(c=>(
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))
+                            }
                         </Form.Field>
-                        <Form.Field>
-                            <label>Product</label>
-                            <input placeholder='' />
+                        <Form.Field
+                            label="Product"
+                            control="select"
+                            onChange={e=>e.target.value}
+                            required
+                        >
+                            <option key="1" value="">select product</option>
+                            {
+                                productsList.map(c=>(
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))
+                            }
                         </Form.Field>
-                        <Form.Field>
-                            <label>Store</label>
-                            <input placeholder='' />
+                        <Form.Field
+                            label="Store"
+                            control="select"
+                            onChange={e=>e.target.value}
+                            required
+                        >
+                            <option key="1" value="">select store</option>
+                            {
+                                productsList.map(c=>(
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))
+                            }
                         </Form.Field>
                     </Form>
                     </Modal.Description>
@@ -158,7 +274,7 @@ const copyRightStyle = {
                 </Modal.Content>
                 <Modal.Actions>
                     <SemiButton secondary onClick={() => setOpenDelete(false)}>cancel</SemiButton>
-                    <SemiButton negative onClick={() => setOpenDelete(false)}>delete <BsX /></SemiButton>
+                    <SemiButton negative onClick={deleteSales}>delete <BsX /></SemiButton>
                 </Modal.Actions>
             </Modal>
         </div>

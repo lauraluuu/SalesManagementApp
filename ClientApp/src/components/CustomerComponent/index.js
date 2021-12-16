@@ -5,16 +5,13 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
+import CopyRight from '../CopyRight';
 
  const CustomerComponent = (props) => {
     const [customersList, setCustomersList] = useState([]);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-
-    const copyRightStyle = {
-        font: "10px Arial, sans-serif"
-    };
 
     /* GET CUSTOMERS LIST */
     const getCustomersList = () => {
@@ -119,7 +116,8 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     )}
                 </tbody>
             </Table>
-            <div style={copyRightStyle}>&copy; 2020 - Laura Lu</div>
+
+            <CopyRight />
 
             {/* Create Modal */}
             <Modal

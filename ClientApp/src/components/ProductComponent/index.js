@@ -5,6 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
+import CopyRight from '../CopyRight';
 
  const ProductComponent = (props) => {
     const [productsList, setProductsList] = useState([]);
@@ -120,7 +121,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
                     ))}
                 </tbody>
             </Table>
-            <div style={copyRightStyle}>&copy; 2020 - Laura Lu</div>
+            <CopyRight />
 
             {/* Create Modal */}
             <Modal

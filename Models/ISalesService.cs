@@ -5,7 +5,7 @@ namespace SalesManagementApp.Models
 {
     public interface ISalesService
     {
-        void Delete(Sales prSales);
+        void Delete(int id);
         List<Sales> GetAll();
         Sales GetById(int prId);
         Sales Save(NewSalesVM prSales);

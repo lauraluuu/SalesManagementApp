@@ -58,8 +58,13 @@ namespace SalesManagementApp.Models
 
             return prSales;
         }
-        public void Delete(Sales prSales)
+        public void Delete(int id)
         {
+            var prSales = _context.Sales.Include(n => n.Customer).Include(n => n.Store).
+                    Include(n => n.Product).FirstOrDefault(x => x.Id == id);
+            
+
+            //_context.Sales.Remove(prSales);
             _context.Entry(prSales).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             _context.SaveChanges();
         }

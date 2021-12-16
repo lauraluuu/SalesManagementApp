@@ -43,9 +43,9 @@ namespace SalesManagementApp.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(Sales prSales)
+        public IActionResult Delete(int id)
         {
-            _ISalesService.Delete(prSales);
+            _ISalesService.Delete(id);
             return Ok();
         }
     }
