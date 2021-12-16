@@ -1,12 +1,12 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'reactstrap';
 import axios from 'axios';
-import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsCheck2, BsX } from "react-icons/bs";
 import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
 import AddStoreModal from './AddStoreModal';
+import EditStoreModal from './EditStoreModal';
 
  const StoreComponent = (props) => {
     const [storesList, setStoresList] = useState([]);
@@ -84,12 +84,13 @@ import AddStoreModal from './AddStoreModal';
                     </tr>
                 </thead>
                 <tbody>
-                    {storesList.map(item => 
-                        <tr key={item.id}>
-                            <td>{item.name}</td>
-                            <td>{item.address}</td>
-                            <td><Button onClick={() => handleStoreEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td>
-                            <td><Button onClick={() => handleStoreDelete(item)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
+                    {storesList.map(store => 
+                        <tr key={store.id}>
+                            <td>{store.name}</td>
+                            <td>{store.address}</td>
+                            <td><EditStoreModal store={store} getStoresList={getStoresList} /></td>
+                            {/* <td><Button onClick={() => handleStoreEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td> */}
+                            <td><Button onClick={() => handleStoreDelete(store)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
                         </tr>
                     )}
                 </tbody>

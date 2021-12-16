@@ -7,7 +7,6 @@ const AddCustomerModal = (props) => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [openCreate, setOpenCreate] = useState(false);
-    const [customer, setCustomer] = useState({id: '', name: '', address: '' });
 
     const handleNameInputChange = (event) => {
         setName(event.target.value);
@@ -26,10 +25,6 @@ const AddCustomerModal = (props) => {
         })
     }
 
-    const handleAddCustomer = () => {
-        props.handleAddCustomer(customer);
-    }
-
     return (
         <Modal
             size={"tiny"}
@@ -38,7 +33,6 @@ const AddCustomerModal = (props) => {
             onClose={() => setOpenCreate(false)}
             onOpen={() => setOpenCreate(true)}
             trigger={<Button primary>New Customer</Button>}
-            handleAddCustomer={handleAddCustomer}
         >
             <Modal.Header>Create Customer</Modal.Header>
             <Modal.Content>
