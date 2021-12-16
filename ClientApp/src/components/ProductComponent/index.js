@@ -8,10 +8,11 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
+import DeleteProductModal from './DeleteProductModal';
 
  const ProductComponent = (props) => {
     const [productsList, setProductsList] = useState([]);
-    const [openDelete, setOpenDelete] = useState(false);
+    // const [openDelete, setOpenDelete] = useState(false);
 
     /* GET PRODUCT LIST */
     const getProductsList = () => {
@@ -29,13 +30,13 @@ import EditProductModal from './EditProductModal';
     /* INSERT PRODUCT */
     const [productToAdd, setProductToAdd] = useState({ name: '', address: '' });
 
-    /* UPDATE PRODUCT */
-    const [productToEdit, setProductToEdit] = useState({ name: '', price: '' });
-    const handleProductToEditInputChange = (event) => {
-        const { name, value } = event.target;
-        let productToEditNewReference = { ...productToEdit, [name]: value };
-        setProductToEdit(productToEditNewReference);
-    }
+    // /* UPDATE PRODUCT */
+    // const [productToEdit, setProductToEdit] = useState({ name: '', price: '' });
+    // const handleProductToEditInputChange = (event) => {
+    //     const { name, value } = event.target;
+    //     let productToEditNewReference = { ...productToEdit, [name]: value };
+    //     setProductToEdit(productToEditNewReference);
+    // }
 
     // const handleProductEdit = (item) => {
     //     setProductToEdit(item);
@@ -53,23 +54,23 @@ import EditProductModal from './EditProductModal';
     //     })
     // }
 
-    /* DELETE PRODUCT */
-    const handleProductDelete = (item) => {
-        setProductToEdit(item);
+    // /* DELETE PRODUCT */
+    // const handleProductDelete = (item) => {
+    //     setProductToEdit(item);
 
-        setOpenDelete(true);
-    }
+    //     setOpenDelete(true);
+    // }
 
-    const deleteProduct = () => {
-        axios.delete("https://localhost:7192/api/Product/Delete", { data: productToEdit }).then(response => {
-            let productsNewReference = [...productsList];
-            const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
-            productsNewReference.splice(index, 1);
-            setProductToEdit({ name: '', price: '' });
-            setProductsList(productsNewReference);
-            setOpenDelete(false);
-        })
-    }
+    // const deleteProduct = () => {
+    //     axios.delete("https://localhost:7192/api/Product/Delete", { data: productToEdit }).then(response => {
+    //         let productsNewReference = [...productsList];
+    //         const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
+    //         productsNewReference.splice(index, 1);
+    //         setProductToEdit({ name: '', price: '' });
+    //         setProductsList(productsNewReference);
+    //         setOpenDelete(false);
+    //     })
+    // }
 
     return (
         <div>
@@ -92,7 +93,7 @@ import EditProductModal from './EditProductModal';
                             <td>{product.name}</td>
                             <td>{product.price}</td>
                             <td><EditProductModal product={product} getProductsList={getProductsList} /></td>
-                            <td><Button onClick={() => handleProductDelete(product)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
+                            <td><DeleteProductModal product={product} getProductsList={getProductsList} /></td>
                         </tr>
                     ))}
                 </tbody>
@@ -129,7 +130,7 @@ import EditProductModal from './EditProductModal';
             </Modal> */}
 
             {/* Delete Modal */}
-            <Modal
+            {/* <Modal
                 size={"tiny"}
                 centered={false}
                 open={openDelete}
@@ -146,7 +147,7 @@ import EditProductModal from './EditProductModal';
                     <SemiButton secondary onClick={() => setOpenDelete(false)}>cancel</SemiButton>
                     <SemiButton negative onClick={deleteProduct}>delete <BsX /></SemiButton>
                 </Modal.Actions>
-            </Modal>
+            </Modal> */}
         </div>
     )
 }
