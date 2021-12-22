@@ -5,10 +5,15 @@ import CopyRight from '../CopyRight';
 import AddCustomerModal from './AddCustomerModal';
 import EditCustomerModal from './EditCustomerModal';
 import DeleteCustomerModal from './DeleteCustomerModal';
+import Pagination from '../Pagination/Pagination';
+import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
 
  const CustomerComponent = (props) => {
     const [customersList, setCustomersList] = useState([]);
+    const [postsPerPage, setPostsPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
+
 
     /* GET CUSTOMERS LIST */
     const getCustomersList = () => {
@@ -23,7 +28,19 @@ import DeleteCustomerModal from './DeleteCustomerModal';
         getCustomersList();
     }, [])
 
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = customersList.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = (pageNumber) => setCurrentPage({ pageNumber });
+
+    const handleRowOptionsDropDown = (value) => {
+        console.log(value);
+        setPostsPerPage({ value });
+    };
+
     return (
+        
         <div>
             <div>
                 <AddCustomerModal getCustomersList={getCustomersList} />
@@ -49,6 +66,17 @@ import DeleteCustomerModal from './DeleteCustomerModal';
                     )}
                 </tbody>
             </Table>
+
+            <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={customersList.length}
+                paginate={paginate}
+            />
+
+            <RowOptionsDropDown
+                handleRowOptionsDropDown={handleRowOptionsDropDown}
+                fetchCustomer={getCustomersList}
+            />
 
             <CopyRight />
         </div>
