@@ -9,6 +9,6 @@ namespace SalesManagementApp.Models
         List<Sales> GetAll();
         Sales GetById(int prId);
         Sales Save(NewSalesVM prSales);
-        Sales Update(Sales prSales);
+        Sales Update(NewSalesVM prSales);
     }
 }

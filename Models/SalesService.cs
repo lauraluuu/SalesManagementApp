@@ -49,15 +49,20 @@ namespace SalesManagementApp.Models
 
             return salesResult;
         }
-        public Sales Update(Sales prSales)
+        public Sales Update(NewSalesVM prSales)
         {
-            Sales salesFromDB = _context.Sales.Include(n => n.Customer).Include(n => n.Store).
-                    Include(n => n.Product).First(x => x.Id == prSales.Id);
+            Sales salesFromDB = _context.Sales.FirstOrDefault(n => n.Id == prSales.Id);
+
             _context.Entry(salesFromDB).CurrentValues.SetValues(prSales);
             _context.SaveChanges();
 
-            return prSales;
+            Sales salesResult = _context.Sales
+                .Include(n => n.Customer).Include(n => n.Store).
+                Include(n => n.Product).First(x => x.Id == prSales.Id);
+
+            return salesResult;
         }
+
         public void Delete(int id)
         {
             var prSales = _context.Sales.Include(n => n.Customer).Include(n => n.Store).

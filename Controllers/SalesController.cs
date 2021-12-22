@@ -30,8 +30,14 @@ namespace SalesManagementApp.Controllers
             return Ok(cResult);
         }
 
+        //[HttpPut]
+        //public IActionResult Update(Sales prSales)
+        //{
+        //    return Ok(_ISalesService.Update(prSales));
+        //}
+
         [HttpPut]
-        public IActionResult Update(Sales prSales)
+        public IActionResult Update(NewSalesVM prSales)
         {
             return Ok(_ISalesService.Update(prSales));
         }
