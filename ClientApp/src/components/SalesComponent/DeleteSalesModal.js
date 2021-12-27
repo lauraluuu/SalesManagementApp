@@ -10,7 +10,7 @@ import { Button as SemiButton, Modal } from 'semantic-ui-react';
     const [openDelete, setOpenDelete] = useState(false);
 
     const deleteSales = () => {
-        axios.delete(`https://localhost:7192/api/Sales/Delete?id=${id}`).then(response => {
+        axios.delete(`https://sales-manage-app.azurewebsites.net/api/Sales/Delete?id=${id}`).then(response => {
             props.getSalesList();
 
             setOpenDelete(false);

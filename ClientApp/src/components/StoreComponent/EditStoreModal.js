@@ -20,7 +20,7 @@ import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
     }
 
     const confirmUpdate = () => {
-        axios.put("https://localhost:7192/api/Store/Update", {id: id, name: name, address: address}).then(response => {
+        axios.put("https://sales-manage-app.azurewebsites.net/api/Store/Update", {id: id, name: name, address: address}).then(response => {
             props.getStoresList();
             setOpenEdit(false);
         })

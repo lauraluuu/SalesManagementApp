@@ -42,7 +42,7 @@ const AddSalesModal = (props) => {
         console.log(dateSold);
         console.log(customerId);
         console.log(productId);
-        axios.post("https://localhost:7192/api/Sales/Save", 
+        axios.post("https://sales-manage-app.azurewebsites.net/api/Sales/Save", 
             {
                 storeId: storeId, 
                 dateSold: dateSold,

@@ -18,7 +18,7 @@ const AddProductModal = (props) => {
 
     const confirmNewProduct = () => {
 
-        axios.post("https://localhost:7192/api/Product/Save", {name, price}).then(response => {
+        axios.post("https://sales-manage-app.azurewebsites.net/api/Product/Save", {name, price}).then(response => {
             props.getProductsList();
 
             setOpenCreate(false); //close Create Modal

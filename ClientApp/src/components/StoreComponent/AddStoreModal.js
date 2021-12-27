@@ -18,7 +18,7 @@ const AddStoreModal = (props) => {
 
     const confirmNewStore = () => {
 
-        axios.post("https://localhost:7192/api/Store/Save", {name, address}).then(response => {
+        axios.post("https://sales-manage-app.azurewebsites.net/api/Store/Save", {name, address}).then(response => {
             props.getStoresList();
 
             setOpenCreate(false); //close Create Modal
