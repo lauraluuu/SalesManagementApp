@@ -15,7 +15,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
     /* GET STORES LIST */
     const getStoresList = () => {
-        let URL = "https://localhost:7192/api/Store/GetAll";
+        let URL = "https://sales-manage-app.azurewebsites.net/api/Store/GetAll";
 
         axios.get(URL).then(response => {
             setStoresList(response.data);

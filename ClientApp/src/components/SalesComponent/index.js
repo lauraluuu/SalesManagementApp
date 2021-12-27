@@ -18,7 +18,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
     /* GET SALES LIST */
     const getSalesList = () => {
-        let URL = "https://localhost:7192/api/Sales/GetAll";
+        let URL = "https://sales-manage-app.azurewebsites.net/api/Sales/GetAll";
 
         axios.get(URL).then(response => {
             setSalesList(response.data);
@@ -27,7 +27,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
     /* GET STORES LIST */
     const getStoresList = () => {
-        let URL = "https://localhost:7192/api/Store/GetAll";
+        let URL = "https://sales-manage-app.azurewebsites.net/api/Store/GetAll";
 
         axios.get(URL).then(response => {
             setStoresList(response.data);
@@ -36,7 +36,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
     /* GET PRODUCT LIST */
     const getProductsList = () => {
-        let URL = "https://localhost:7192/api/Product/GetAll";
+        let URL = "https://sales-manage-app.azurewebsites.net/api/Product/GetAll";
 
         axios.get(URL).then(response => {
             setProductsList(response.data);
@@ -45,7 +45,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
     /* GET CUSTOMERS LIST */
     const getCustomersList = () => {
-        let URL = "https://localhost:7192/api/Customer/GetAll";
+        let URL = "https://sales-manage-app.azurewebsites.net/api/Customer/GetAll";
 
         axios.get(URL).then(response => {
             setCustomersList(response.data);

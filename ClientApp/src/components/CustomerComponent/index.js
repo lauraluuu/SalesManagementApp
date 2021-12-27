@@ -17,7 +17,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
     /* GET CUSTOMERS LIST */
     const getCustomersList = () => {
-        let URL = "https://localhost:7192/api/Customer/GetAll";
+        let URL = "https://sales-manage-app.azurewebsites.net/api/Customer/GetAll";
 
         axios.get(URL).then(response => {
             setCustomersList(response.data);

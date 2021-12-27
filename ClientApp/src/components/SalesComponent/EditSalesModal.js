@@ -50,7 +50,7 @@ const EditSalesModal = (props) => {
     }
 
     const confirmUpdate = () => {
-        axios.put("https://localhost:7192/api/Sales/Update", 
+        axios.put("https://sales-manage-app.azurewebsites.net/api/Sales/Update", 
         {
             id: id, 
             dateSold: dateSold, 

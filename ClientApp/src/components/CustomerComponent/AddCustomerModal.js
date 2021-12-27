@@ -18,7 +18,7 @@ const AddCustomerModal = (props) => {
 
     const confirmNewCustomer = () => {
 
-        axios.post("https://localhost:7192/api/Customer/Save", {name, address}).then(response => {
+        axios.post("https://sales-manage-app.azurewebsites.net/api/Customer/Save", {name, address}).then(response => {
 
             props.getCustomersList();
             setOpenCreate(false); //close Create Modal

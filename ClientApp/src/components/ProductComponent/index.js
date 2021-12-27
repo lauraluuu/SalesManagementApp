@@ -15,7 +15,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
     /* GET PRODUCT LIST */
     const getProductsList = () => {
-        let URL = "https://localhost:7192/api/Product/GetAll";
+        let URL = "https://sales-manage-app.azurewebsites.net/api/Product/GetAll";
 
         axios.get(URL).then(response => {
             setProductsList(response.data);
