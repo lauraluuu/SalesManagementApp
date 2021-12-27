@@ -74,7 +74,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
             <RowOptionsDropDown
                 handleRowOptionsDropDown={handleRowOptionsDropDown}
-                fetchCustomer={getProductsList}
+                fetchData={getProductsList}
             />
             <br />
 

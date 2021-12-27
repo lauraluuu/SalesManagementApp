@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SalesManagementApp;
+using SalesManagementApp.Data;
 using SalesManagementApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,8 @@ app.UseSwaggerUI(c =>
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
+AppDbInitializer.Seed(app);
 
 app.MapFallbackToFile("index.html"); ;
 

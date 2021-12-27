@@ -1,4 +1,4 @@
-﻿/*using SalesManagementApp.Models;
+﻿using SalesManagementApp.Models;
 
 namespace SalesManagementApp.Data
 {
@@ -103,10 +103,19 @@ namespace SalesManagementApp.Data
                 //Sales
                 if (!context.Sales.Any())
                 {
-
+                    context.Sales.AddRange(new List<Sales>()
+                    {
+                        new Sales()
+                        {
+                            DateSold = DateTime.Now,
+                            CustomerId = 1,
+                            ProductId = 2,
+                            StoreId = 2
+                        }
+                    });
+                    context.SaveChanges();
                 }
             }
         }
     }
 }
-*/

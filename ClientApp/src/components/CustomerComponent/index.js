@@ -11,7 +11,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
  const CustomerComponent = (props) => {
     const [customersList, setCustomersList] = useState([]);
-    const [postsPerPage, setPostsPerPage] = useState(3);
+    const [postsPerPage, setPostsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
 
@@ -77,7 +77,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
             <RowOptionsDropDown
                 handleRowOptionsDropDown={handleRowOptionsDropDown}
-                fetchCustomer={getCustomersList}
+                fetchData={getCustomersList}
             />
             <br />
 
