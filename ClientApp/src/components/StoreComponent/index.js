@@ -1,17 +1,17 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { Table, Button } from 'reactstrap';
+import { Table } from 'reactstrap';
 import axios from 'axios';
-import { MdDelete } from "react-icons/md";
-import { BsCheck2, BsX } from "react-icons/bs";
-import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
 import AddStoreModal from './AddStoreModal';
 import EditStoreModal from './EditStoreModal';
+import DeleteStoreModal from './DeleteStoreModal';
+import Pagination from '../Pagination/Pagination';
+import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
  const StoreComponent = (props) => {
     const [storesList, setStoresList] = useState([]);
-    const [openEdit, setOpenEdit] = useState(false);
-    const [openDelete, setOpenDelete] = useState(false);
+    const [postsPerPage, setPostsPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
 
     /* GET STORES LIST */
     const getStoresList = () => {
@@ -26,48 +26,19 @@ import EditStoreModal from './EditStoreModal';
         getStoresList();
     }, [])
 
-    /* UPDATE STORE */
-    const [storeToEdit, setStoreToEdit] = useState({ name: '', address: '' });
-    const handleStoreToEditInputChange = (event) => {
-        const { name, value } = event.target;
-        let storeToEditNewReference = { ...storeToEdit, [name]: value };
-        setStoreToEdit(storeToEditNewReference);
-    }
+    // Get current posts
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = storesList.slice(indexOfFirstPost, indexOfLastPost);
 
-    const handleStoreEdit = (item) => {
-        setStoreToEdit(item);
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-        setOpenEdit(true);
-    }
-
-    const confirmUpdate = () => {
-        axios.put("https://localhost:7192/api/Store/Update", storeToEdit).then(response => {
-            let customersNewReference = [...storesList];
-            const index = customersNewReference.findIndex((item) => item.id === storeToEdit.id);
-            customersNewReference[index] = storeToEdit;
-            setStoresList(customersNewReference);
-            setOpenEdit(false);
-        })
-    }
-
-    /* DELETE STORE */
-    const handleStoreDelete = (item) => {
-        setStoreToEdit(item);
-
-        setOpenDelete(true);
-    }
-
-    const deleteStore = () => {
-        axios.delete("https://localhost:7192/api/Store/Delete", { data: storeToEdit }).then(response => {
-            let storesNewReference = [...storesList];
-            const index = storesNewReference.findIndex((item) => item.id === storeToEdit.id);
-            storesNewReference.splice(index, 1);
-            setStoreToEdit({ name: '', address: '' });
-            setStoresList(storesNewReference);
-            setOpenDelete(false);
-        })
-    }
-
+    const handleRowOptionsDropDown = (value) => {
+        console.log(value);
+        setPostsPerPage(value);
+    };
+    
     return (
         <div>
             <div>
@@ -84,67 +55,31 @@ import EditStoreModal from './EditStoreModal';
                     </tr>
                 </thead>
                 <tbody>
-                    {storesList.map(store => 
+                    {currentPosts.map(store => 
                         <tr key={store.id}>
                             <td>{store.name}</td>
                             <td>{store.address}</td>
                             <td><EditStoreModal store={store} getStoresList={getStoresList} /></td>
-                            {/* <td><Button onClick={() => handleStoreEdit(item)} color="warning" style={{color: "white"}}><FaEdit color="white"/> EDIT</Button></td> */}
-                            <td><Button onClick={() => handleStoreDelete(store)} color="danger"><MdDelete color="white"/> DELETE</Button></td>
+                            <td><DeleteStoreModal store={store} getStoresList={getStoresList} /></td>
                         </tr>
                     )}
                 </tbody>
             </Table>
-            <CopyRight />
             
-            {/* Edit Modal */}
-            <Modal
-                size={"tiny"}
-                centered={false}
-                open={openEdit}
-                onClose={() => setOpenEdit(false)}
-                onOpen={() => setOpenEdit(true)}
-            >
-                <Modal.Header>Edit Store</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                    <Form>
-                        <Form.Field>
-                            <label>NAME</label>
-                            <input name="name" value={storeToEdit.name} placeholder={storeToEdit.name} onChange={handleStoreToEditInputChange} />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>ADDRESS</label>
-                            <input name="address" value={storeToEdit.address} placeholder={storeToEdit.address} onChange={handleStoreToEditInputChange} />
-                        </Form.Field>
-                    </Form>
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <SemiButton secondary onClick={() => setOpenEdit(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={confirmUpdate}>edit <BsCheck2 /></SemiButton>
-                </Modal.Actions>
-            </Modal>
+            <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={storesList.length}
+                paginate={paginate}
+            />
 
-            {/* Delete Modal */}
-            <Modal
-                size={"tiny"}
-                centered={false}
-                open={openDelete}
-                onClose={() => setOpenDelete(false)}
-                onOpen={() => setOpenDelete(true)}
-            >
-                <Modal.Header>Delete Store {storeToEdit.name}</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                        Are you sure?
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <SemiButton secondary onClick={() => setOpenDelete(false)}>cancel</SemiButton>
-                    <SemiButton negative onClick={deleteStore}>delete <BsX /></SemiButton>
-                </Modal.Actions>
-            </Modal>
+            <RowOptionsDropDown
+                handleRowOptionsDropDown={handleRowOptionsDropDown}
+                fetchData={getStoresList}
+            />
+            <br />
+
+            <CopyRight />
+
         </div>
     )
 }

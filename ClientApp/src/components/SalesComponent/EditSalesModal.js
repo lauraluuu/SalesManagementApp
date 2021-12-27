@@ -52,15 +52,15 @@ const EditSalesModal = (props) => {
     const confirmUpdate = () => {
         axios.put("https://localhost:7192/api/Sales/Update", 
         {
-            id: 1, 
+            id: id, 
             dateSold: dateSold, 
             customerId: customer.id, 
             productId: product.id, 
             storeId: store.id
         }).then(response => {
-                props.getSalesList();
-                setOpenEdit(false); //close Create Modal
-    })
+            props.getSalesList();
+            setOpenEdit(false); //close Create Modal
+        })
     }
 
     return (

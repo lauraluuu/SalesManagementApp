@@ -11,7 +11,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
  const CustomerComponent = (props) => {
     const [customersList, setCustomersList] = useState([]);
-    const [postsPerPage, setPostsPerPage] = useState(5);
+    const [postsPerPage, setPostsPerPage] = useState(3);
     const [currentPage, setCurrentPage] = useState(1);
 
 
@@ -28,15 +28,17 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
         getCustomersList();
     }, [])
 
+    // Get current posts
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = customersList.slice(indexOfFirstPost, indexOfLastPost);
 
-    const paginate = (pageNumber) => setCurrentPage({ pageNumber });
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const handleRowOptionsDropDown = (value) => {
         console.log(value);
-        setPostsPerPage({ value });
+        setPostsPerPage(value);
     };
 
     return (
@@ -56,7 +58,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
                     </tr>
                 </thead>
                 <tbody>
-                    {customersList.map(customer => 
+                    {currentPosts.map(customer => 
                         <tr key={customer.id}>
                             <td>{customer.name}</td>
                             <td>{customer.address}</td>
@@ -77,6 +79,7 @@ import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
                 handleRowOptionsDropDown={handleRowOptionsDropDown}
                 fetchCustomer={getCustomersList}
             />
+            <br />
 
             <CopyRight />
         </div>

@@ -1,27 +1,20 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { Table, Button } from 'reactstrap';
+import { Table } from 'reactstrap';
 import axios from 'axios';
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import { BsCheck2, BsX } from "react-icons/bs";
-import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
 import AddSalesModal from './AddSalesModal';
 import EditSalesModal from './EditSalesModal';
 import DeleteSalesModal from './DeleteSalesModal';
+import Pagination from '../Pagination/Pagination';
+import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
  const SalesComponent = (props) => {
-    const [openCreate, setOpenCreate] = useState(false);
-    const [openEdit, setOpenEdit] = useState(false);
-    const [openDelete, setOpenDelete] = useState(false);
     const [salesList, setSalesList] = useState([]);
     const [storesList, setStoresList] = useState([]);
-    const [store, setStore] = useState({id: '',  name: '', address: '' });
     const [productsList, setProductsList] = useState([]);
-    const [product, setProduct] = useState({id: '', price: null, name: '' });
     const [customersList, setCustomersList] = useState([]);
-    const [customer, setCustomer] = useState({id: '',  name: '', address: '' });
-    const [dateSold, setDateSold] = useState('');
+    const [postsPerPage, setPostsPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
 
     /* GET SALES LIST */
     const getSalesList = () => {
@@ -66,32 +59,18 @@ import DeleteSalesModal from './DeleteSalesModal';
         getCustomersList();
     }, [])
 
-    /* CHANGE CUSTOMER INPUT */
-    const handleCustomerInputChange = (event) => {
-        const { name, value } = event.target;
-        let customerNewReference = { ...customer, [name]: value };
-        setCustomer(customerNewReference);
-    }
+    // Get current posts
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = salesList.slice(indexOfFirstPost, indexOfLastPost);
 
-    /* CHANGE PRODUCT INPUT */
-    const handleProductInputChange = (event) => {
-        const { name, value } = event.target;
-        let productNewReference = { ...product, [name]: value };
-        setCustomer(productNewReference);
-    }
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    /* CHANGE STORE INPUT */
-    const handleStoreInputChange = (event) => {
-        const { name, value } = event.target;
-        let storeNewReference = { ...customer, [name]: value };
-        setCustomer(storeNewReference);
-    }
-
-    /* CHANGE DATE INPUT */
-    const handleDateSoldInputChange = (event) => {
-        setDateSold(event.target.value);
-    }
-
+    const handleRowOptionsDropDown = (value) => {
+        console.log(value);
+        setPostsPerPage(value);
+    };
 
     return (
         <div>
@@ -111,7 +90,7 @@ import DeleteSalesModal from './DeleteSalesModal';
                     </tr>
                 </thead>
                 <tbody>
-                    {salesList.map(sales => (
+                    {currentPosts.map(sales => (
                         <tr key={sales.id}>
                             <td>{sales.customer.name}</td>
                             <td>{sales.product.name}</td>
@@ -123,6 +102,19 @@ import DeleteSalesModal from './DeleteSalesModal';
                     ))}
                 </tbody>
             </Table>
+
+            <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={productsList.length}
+                paginate={paginate}
+            />
+
+            <RowOptionsDropDown
+                handleRowOptionsDropDown={handleRowOptionsDropDown}
+                fetchData={getProductsList}
+            />
+            <br />
+
             <CopyRight />
         </div>
     )

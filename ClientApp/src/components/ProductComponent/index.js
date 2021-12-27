@@ -1,18 +1,17 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'reactstrap';
 import axios from 'axios';
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import { BsCheck2, BsX } from "react-icons/bs";
-import { Button as SemiButton, Modal, Form } from 'semantic-ui-react';
 import CopyRight from '../CopyRight';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
 import DeleteProductModal from './DeleteProductModal';
+import Pagination from '../Pagination/Pagination';
+import RowOptionsDropDown from '../Pagination/RowOptionsDropDown';
 
  const ProductComponent = (props) => {
     const [productsList, setProductsList] = useState([]);
-    // const [openDelete, setOpenDelete] = useState(false);
+    const [postsPerPage, setPostsPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
 
     /* GET PRODUCT LIST */
     const getProductsList = () => {
@@ -26,51 +25,19 @@ import DeleteProductModal from './DeleteProductModal';
     useEffect(() => {
         getProductsList();
     }, [])
+    
+    // Get current posts
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = productsList.slice(indexOfFirstPost, indexOfLastPost);
 
-    /* INSERT PRODUCT */
-    const [productToAdd, setProductToAdd] = useState({ name: '', address: '' });
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    // /* UPDATE PRODUCT */
-    // const [productToEdit, setProductToEdit] = useState({ name: '', price: '' });
-    // const handleProductToEditInputChange = (event) => {
-    //     const { name, value } = event.target;
-    //     let productToEditNewReference = { ...productToEdit, [name]: value };
-    //     setProductToEdit(productToEditNewReference);
-    // }
-
-    // const handleProductEdit = (item) => {
-    //     setProductToEdit(item);
-
-    //     setOpenEdit(true);
-    // }
-
-    // const confirmUpdate = () => {
-    //     axios.put("https://localhost:7192/api/Product/Update", productToEdit).then(response => {
-    //         let productsNewReference = [...productsList];
-    //         const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
-    //         productsNewReference[index] = productToEdit;
-    //         setProductsList(productsNewReference);
-    //         setOpenEdit(false);
-    //     })
-    // }
-
-    // /* DELETE PRODUCT */
-    // const handleProductDelete = (item) => {
-    //     setProductToEdit(item);
-
-    //     setOpenDelete(true);
-    // }
-
-    // const deleteProduct = () => {
-    //     axios.delete("https://localhost:7192/api/Product/Delete", { data: productToEdit }).then(response => {
-    //         let productsNewReference = [...productsList];
-    //         const index = productsNewReference.findIndex((item) => item.id === productToEdit.id);
-    //         productsNewReference.splice(index, 1);
-    //         setProductToEdit({ name: '', price: '' });
-    //         setProductsList(productsNewReference);
-    //         setOpenDelete(false);
-    //     })
-    // }
+    const handleRowOptionsDropDown = (value) => {
+        console.log(value);
+        setPostsPerPage(value);
+    };
 
     return (
         <div>
@@ -88,7 +55,7 @@ import DeleteProductModal from './DeleteProductModal';
                     </tr>
                 </thead>
                 <tbody>
-                    {productsList.map(product => (
+                    {currentPosts.map(product => (
                         <tr key={product.id}>
                             <td>{product.name}</td>
                             <td>{product.price}</td>
@@ -98,56 +65,20 @@ import DeleteProductModal from './DeleteProductModal';
                     ))}
                 </tbody>
             </Table>
+            
+            <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={productsList.length}
+                paginate={paginate}
+            />
+
+            <RowOptionsDropDown
+                handleRowOptionsDropDown={handleRowOptionsDropDown}
+                fetchCustomer={getProductsList}
+            />
+            <br />
+
             <CopyRight />
-
-            {/* Edit Modal
-            <Modal
-                size={"tiny"}
-                centered={false}
-                open={openEdit}
-                onClose={() => setOpenEdit(false)}
-                onOpen={() => setOpenEdit(true)}
-            >
-                <Modal.Header>Edit Product</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                    <Form>
-                        <Form.Field>
-                            <label>NAME</label>
-                            <input name="name" value={productToEdit.name} placeholder={productToEdit.name} onChange={handleProductToEditInputChange} />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>PRICE</label>
-                            <input name="price" value={productToEdit.price} placeholder={productToEdit.price} onChange={handleProductToEditInputChange} />
-                        </Form.Field>
-                    </Form>
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <SemiButton secondary onClick={() => setOpenEdit(false)}>cancel</SemiButton>
-                    <SemiButton positive onClick={confirmUpdate}>edit <BsCheck2 /></SemiButton>
-                </Modal.Actions>
-            </Modal> */}
-
-            {/* Delete Modal */}
-            {/* <Modal
-                size={"tiny"}
-                centered={false}
-                open={openDelete}
-                onClose={() => setOpenDelete(false)}
-                onOpen={() => setOpenDelete(true)}
-            >
-                <Modal.Header>Delete Product {productToEdit.name}</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                        Are you sure?
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <SemiButton secondary onClick={() => setOpenDelete(false)}>cancel</SemiButton>
-                    <SemiButton negative onClick={deleteProduct}>delete <BsX /></SemiButton>
-                </Modal.Actions>
-            </Modal> */}
         </div>
     )
 }

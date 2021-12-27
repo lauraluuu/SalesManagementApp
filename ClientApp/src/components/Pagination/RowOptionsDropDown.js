@@ -1,15 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Dropdown } from "semantic-ui-react";
 
-export default class RowOptionsDropDown extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rowNumber: 5,
-    };
-  }
-
-  rowOptions = [
+const RowOptionsDropDown = (props) => {
+  const rowOptions = [
     {
       key: "1",
       text: " 1",
@@ -27,24 +20,23 @@ export default class RowOptionsDropDown extends Component {
     },
   ];
 
-  setRow = (event, { value }) => {
-    this.props.handleRowOptionsDropDown(value);
+  const setRow = (event, { value }) => {
+    props.handleRowOptionsDropDown(value);
   };
 
-  render() {
-    return (
-      <div>
-        <span>
-          Show rows:{" "}
-          <Dropdown
-            className="MVPTask1DropDown"
-            inline
-            options={this.rowOptions}
-            defaultValue={this.rowOptions[1].value}
-            onChange={this.setRow}
-          />
-        </span>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <span>
+        Show rows:{" "}
+        <Dropdown
+          inline
+          options={rowOptions}
+          defaultValue={rowOptions[1].value}
+          onChange={setRow}
+        />
+      </span>
+    </div>
+  )
 }
+
+export default RowOptionsDropDown;
