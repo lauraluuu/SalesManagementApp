@@ -81,13 +81,15 @@ const EditSalesModal = (props) => {
                     >
                         <label>Date sold</label>
                         <input type="date"
-                         defaultValue={dateSold}
+                         placeholder={props.sales.dateSold}
+                         defaultValue={props.sales.dateSold}
                          value={dateSold}/>
                     </Form.Field>
                     <Form.Field
                         label="Customer"
                         name="customerId"
                         defaultValue={props.sales.customer.name}
+                        placeholder={props.sales.customer.name}
                         control={Select}
                         onChange={handleCustomerInputChange}
                         required
@@ -102,6 +104,7 @@ const EditSalesModal = (props) => {
                         label="Product"
                         name="productId"
                         defaultValue={props.sales.product.name}
+                        placeholder={props.sales.product.name}
                         control={Select}
                         onChange={handleProductInputChange}
                         required
@@ -116,6 +119,7 @@ const EditSalesModal = (props) => {
                         label="Store"
                         name="storeId"
                         defaultValue={props.sales.store.name}
+                        placeholder={props.sales.store.name}
                         control={Select}
                         onChange={handleStoreInputChange}
                         required
